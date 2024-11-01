@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Ticket</title>
+    <link rel="stylesheet" href="rw.css"/>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="image/logo1.jpeg" alt="Logo">
+        </div>
+        <label id="IblCurrentDate"></label>
+        <h1>Indian Railway</h1>
+        <ul>
+            <li>Login</li>
+            <li>Register</li>
+            <li>Admin Login</li>
+        </ul>
+        <script>
+            let IblDate = document.getElementById('IblCurrentDate');
+            function updateDateTime() {
+                let now = new Date();
+                let formattedDate = now.toLocaleString(); 
+                IblDate.textContent = formattedDate;
+            }
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+        </script>
+    </div>
+
+    <div class="menu">
+        <ul>
+            <li><a href="home.php">BOOK TICKETS</a></li>
+            <li><a href="register.php">RUNNING-STATUS</a></li>
+            <li><a href="booking.html">PNR STATUS ENQUIRY</a></li>
+            <li><a href="about.php">SEARCH BY NAME/NUMBER</a></li>
+            <li><a href="service.php">SEARCH BY STATION</a></li>
+        </ul>
+    </div>
+
+    <div class="search">
+        <form action="db.php" method="post">
+            <div class="cover">
+                <label for="from">FROM</label>
+                <input type="text" size="30" id="fromInput" placeholder="Leaving from" required>
+                <div id="fromSuggestions" class="autocomplete-suggestions"></div>
+                <br><br><br>
+                
+                <label for="to">TO</label>
+                <input type="text" size="30" id="toInput" placeholder="Going TO" required>
+                <div id="toSuggestions" class="autocomplete-suggestions"></div>
+                <br><br><br>
+                
+                <label for="date">DATE</label>
+                <input type="date" name="d">
+                <br><br><br>
+
+                <select name="classes" id="">
+                    <option value="All classes" selected>All Classes</option>
+                    <option value="First class">First Class</option>
+                    <option value="Ac-2 tier">Ac-2 Tier(2A)</option>
+                    <option value="Ac-3 tier">Ac-3 Tier(3A)</option>
+                    <option value="Sleeper">Sleeper(SL)</option>
+                    <option value="Second-Seating">Second-Seating(2S)</option>
+                </select>
+                <br><br>
+                <div class="button">
+                    <input type="reset" value="CANCEL">
+                    <input type="submit" value="SEARCH">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const stationData = [
+            "New Delhi",
+            "Mumbai Central",
+            "Howrah Junction",
+            "Chennai Central",
+            "Bangalore City",
+            "Rajdhani",
+            "Shatabdi Express",
+            "Guwahati",
+            "Patna Junction"
+        ];
+
+        function autocomplete(input, suggestionsDiv) {
+            input.addEventListener('input', function() {
+                const query = this.value.toLowerCase();
+                suggestionsDiv.innerHTML = '';
+
+                if (query.length === 0) {
+                    return;
+                }
+
+                const filteredStations = stationData.filter(station => station.toLowerCase().startsWith(query));
+
+                filteredStations.forEach(station => {
+                    const suggestion = document.createElement('div');
+                    suggestion.classList.add('autocomplete-suggestion');
+                    suggestion.textContent = station;
+
+                    suggestion.addEventListener('click', function() {
+                        input.value = station;
+                        suggestionsDiv.innerHTML = ''; 
+                    });
+
+                    suggestionsDiv.appendChild(suggestion);
+                });
+            });
+        }
+
+        const fromInput = document.getElementById('fromInput');
+        const fromSuggestions = document.getElementById('fromSuggestions');
+        const toInput = document.getElementById('toInput');
+        const toSuggestions = document.getElementById('toSuggestions');
+
+        autocomplete(fromInput, fromSuggestions);
+        autocomplete(toInput, toSuggestions);
+    </script>
+</body>
+</html>
